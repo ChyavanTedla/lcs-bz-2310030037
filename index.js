@@ -1,26 +1,27 @@
-function longestCommonSubstringLength(s1, s2) {
-  const m = s1.length
-  const n = s2.length
 
-  // Create DP table
-  const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0))
+function countSubsetsWithSumLE(arr, limit) {
+  let count = 0;
 
-  let maxLength = 0
-
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      if (s1[i - 1] === s2[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + 1
-        maxLength = Math.max(maxLength, dp[i][j])
-      }
+  function backtrack(index, currentSum) {
+    if (currentSum > limit) return; 
+    if (index === arr.length) {
+      count++;
+      return;
     }
+
+    // Include current element
+    backtrack(index + 1, currentSum + arr[index]);
+
+    // Exclude current element
+    backtrack(index + 1, currentSum);
   }
 
-  return maxLength
+  backtrack(0, 0);
+  return count;
 }
 
-const str1 = "abcdef"
-const str2 = "zcdemf"
+const arr = [1, 2, 3];
+const limit = 5;
 
-const result = longestCommonSubstringLength(str1, str2)
-console.log("Longest Common Substring Length:", result)
+const result = countSubsetsWithSumLE(arr, limit);
+console.log(`Number of subsets with sum <= ${limit}:`, result);
