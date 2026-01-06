@@ -1,11 +1,26 @@
-import express from 'express'
+function longestCommonSubstringLength(s1, s2) {
+  const m = s1.length
+  const n = s2.length
 
-const app = express()
+  // Create DP table
+  const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0))
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
+  let maxLength = 0
 
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000')
-})
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (s1[i - 1] === s2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + 1
+        maxLength = Math.max(maxLength, dp[i][j])
+      }
+    }
+  }
+
+  return maxLength
+}
+
+const str1 = "abcdef"
+const str2 = "zcdemf"
+
+const result = longestCommonSubstringLength(str1, str2)
+console.log("Longest Common Substring Length:", result)
